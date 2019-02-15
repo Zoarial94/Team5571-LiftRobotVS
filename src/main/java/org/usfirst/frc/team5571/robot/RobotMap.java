@@ -60,17 +60,19 @@ public class RobotMap {
                             CLAW_RIGHTMOTOR         = 4;
 	
 	/*
-	 * CAN Communications
-	 * 1 for testing
+	 * CAN Communications 
+	 * MUST BE CONFIGURED PER DEVICE IN PHOENIX TUNER
+	 * 2 for Drive Train
 	 */
 	
-	public static final int DRIVETRAIN_RIGHTENCODMOTOR   = 0,
-							DRIVETRAIN_LEFTENCODMOTOR    = 1;
+	public static final int DRIVETRAIN_RIGHTTALON  = 0,
+							DRIVETRAIN_LEFTTALON   = 1,
+							TESTING_TALON          = 20;
 	
 	/*
 	 * DIGITAL INPUT
 	 * 2 for Elevator (Limit Switches)
-	 * 2 encoders and 2 inputs for ONE rotary encoder (4 total)
+	 * 2 encoders and 2 inputs for ONE encoder (4 total)
 	 */
 	public static final int ELEVATOR_TOPSWITCH        = 0,
 							ELEVATOR_BOTTOMSWITCH     = 1,

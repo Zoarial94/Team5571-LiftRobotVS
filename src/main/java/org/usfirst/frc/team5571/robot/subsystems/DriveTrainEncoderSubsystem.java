@@ -1,5 +1,7 @@
 package org.usfirst.frc.team5571.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import org.usfirst.frc.team5571.robot.RobotMap;
 import org.usfirst.frc.team5571.robot.commands.DriveTrainDrive;
 import org.usfirst.frc.team5571.robot.commands.DriveTrainDriveEncoders;
@@ -13,15 +15,10 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  *
  */
 public class DriveTrainEncoderSubsystem extends Subsystem {
-
-DifferentialDrive drive;
 	
 	double sensitivity;
 	
 	public DriveTrainEncoderSubsystem() {
-		
-		//Setup CAN devices
-		//Try using drive = new DifferentialDrive()
 		
 		sensitivity = 0.6;
 		
