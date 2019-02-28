@@ -13,7 +13,7 @@ public class DriveTrainDriveEncoders extends Command {
 	DriveTrainEncoderSubsystem SUB;
 
     public DriveTrainDriveEncoders() {
-    	SUB = Robot.m_DriveTrainEncodersSub;
+    	SUB = Robot.m_DriveTrainEncoderSub;
         requires(SUB);
     }
 

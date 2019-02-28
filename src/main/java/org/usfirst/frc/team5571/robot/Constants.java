@@ -2,6 +2,13 @@ package org.usfirst.frc.team5571.robot;
 
 public class Constants {
 
+	/**
+	 * Drive Train Constants
+	 */
+	public final static double driveTrainNormalSpeed = 0.3;
+	public final static double driveTrainMaxSpeed = 1.0;
+
+
     /**
 	 * How many sensor units per rotation.
 	 * Using CTRE Magnetic Encoder.

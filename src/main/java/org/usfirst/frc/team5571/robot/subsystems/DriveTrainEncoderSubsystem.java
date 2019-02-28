@@ -5,7 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.*;
 
 import org.usfirst.frc.team5571.robot.RobotMap;
 import org.usfirst.frc.team5571.robot.commands.DriveTrainDriveEncoders;
-import org.usfirst.frc.team5571.robot.Constants ;
+import org.usfirst.frc.team5571.robot.Constants;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -23,7 +23,7 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
 		sensitivity = 0.6;
 		mode = 1;
 
-		_testMotor = new TalonSRX(20);
+		_testMotor = new TalonSRX(RobotMap.TESTING_TALON);
 		_testMotor.set(ControlMode.PercentOutput, 0);
 		_testMotor.configFactoryDefault();
 		_testMotor.setNeutralMode(NeutralMode.Brake);

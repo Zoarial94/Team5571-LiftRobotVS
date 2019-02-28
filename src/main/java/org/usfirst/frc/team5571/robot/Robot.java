@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team5571.robot.subsystems.*;
 import org.usfirst.frc.team5571.robot.commands.*;
-import com.ctre.phoenix.motorcontrol.can.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -27,7 +26,7 @@ public class Robot extends TimedRobot {
 	
 	//Subsystems
 	public static DriveTrainSubsystem m_DriveTrainSub;
-	public static DriveTrainEncoderSubsystem m_DriveTrainEncodersSub;
+	public static DriveTrainEncoderSubsystem m_DriveTrainEncoderSub;
 	public static ElevatorSubsystem m_ElevatorSub;
 	public static ClawSubsystem m_ClawSub;
 	
@@ -47,7 +46,7 @@ public class Robot extends TimedRobot {
 		m_chooser = new SendableChooser<>();
 		m_oi = new OI();
 		
-		m_DriveTrainEncodersSub = new DriveTrainEncoderSubsystem();
+		m_DriveTrainEncoderSub = new DriveTrainEncoderSubsystem();
 		//m_DriveTrainSub = new DriveTrainSubsystem();
 		m_ElevatorSub = new ElevatorSubsystem();
 		m_ClawSub = new ClawSubsystem();

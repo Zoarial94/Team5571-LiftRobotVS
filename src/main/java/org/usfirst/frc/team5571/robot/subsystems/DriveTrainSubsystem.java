@@ -3,7 +3,6 @@ package org.usfirst.frc.team5571.robot.subsystems;
 import org.usfirst.frc.team5571.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import org.usfirst.frc.team5571.robot.commands.*;
 import edu.wpi.first.wpilibj.Encoder;
@@ -21,8 +20,8 @@ public class DriveTrainSubsystem extends Subsystem {
 	public DriveTrainSubsystem() {
 		
 		drive = new DifferentialDrive(
-    			new Spark(RobotMap.DRIVETRAIN_LEFTMOTOR),
-    			new Spark(RobotMap.DRIVETRAIN_RIGHTMOTOR)
+    			new PWMTalonSRX(RobotMap.DRIVETRAIN_LEFTMOTOR),
+    			new PWMTalonSRX(RobotMap.DRIVETRAIN_RIGHTMOTOR)
     			);
 		
 		//Check https://wpilib.screenstepslive.com/s/currentCS/m/java/l/599717-encoders-measuring-rotation-of-a-wheel-or-other-shaft

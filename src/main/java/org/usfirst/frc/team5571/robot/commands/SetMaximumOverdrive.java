@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5571.robot.commands;
 
 import org.usfirst.frc.team5571.robot.Robot;
+import org.usfirst.frc.team5571.robot.Constants;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -16,7 +17,7 @@ public class SetMaximumOverdrive extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.m_DriveTrainSub.setSensitivity(1);
+    	Robot.m_DriveTrainEncoderSub.setSensitivity(Constants.driveTrainMaxSpeed);
     }
 
     // Called repeatedly when this Command is scheduled to run

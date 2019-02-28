@@ -1,7 +1,7 @@
 package org.usfirst.frc.team5571.robot.subsystems;
 import org.usfirst.frc.team5571.robot.RobotMap;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.PWMTalonSRX;
 /**
  *this subsystem is used to control the motors on the claw
  *
@@ -14,13 +14,13 @@ import edu.wpi.first.wpilibj.Spark;
  */
 public class ClawSubsystem extends Subsystem
 {
-	Spark LeftMotor;
-	Spark RightMotor;
+	PWMTalonSRX LeftMotor;
+	PWMTalonSRX RightMotor;
 	double Speed;
     public ClawSubsystem()
     {
-    	LeftMotor=new Spark(RobotMap.CLAW_LEFTMOTOR);
-    	RightMotor=new Spark(RobotMap.CLAW_RIGHTMOTOR);
+    	LeftMotor=new PWMTalonSRX(RobotMap.CLAW_LEFTMOTOR);
+    	RightMotor=new PWMTalonSRX(RobotMap.CLAW_RIGHTMOTOR);
     	Speed=0.1;
     }
     public void setSpeed(double speed)

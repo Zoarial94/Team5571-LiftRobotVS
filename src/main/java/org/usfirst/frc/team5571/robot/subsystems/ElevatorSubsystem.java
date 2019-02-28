@@ -3,8 +3,7 @@ package org.usfirst.frc.team5571.robot.subsystems;
 import org.usfirst.frc.team5571.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.Counter;
+import edu.wpi.first.wpilibj.PWMTalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
@@ -16,7 +15,7 @@ public class ElevatorSubsystem extends Subsystem {
     // here. Call these from Commands.
 	
 	//Physical motor
-	Spark liftMotor;
+	PWMTalonSRX liftMotor;
 	//Value to be passed into liftMotor's 'set' function
 	double speed;
 	
@@ -35,7 +34,7 @@ public class ElevatorSubsystem extends Subsystem {
 	//Constructor
 	public ElevatorSubsystem() {
 		//Set motor
-		liftMotor = new Spark(RobotMap.ELEVATOR_MOTOR);
+		liftMotor = new PWMTalonSRX(RobotMap.ELEVATOR_MOTOR);
 		//Set default speed
 		speed = 0.2;
 		
