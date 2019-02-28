@@ -27,7 +27,7 @@ public class Robot extends TimedRobot {
 	
 	//Subsystems
 	public static DriveTrainSubsystem m_DriveTrainSub;
-	public static DriveTrainSubsystem m_DriveTrainEncodersSub;
+	public static DriveTrainEncoderSubsystem m_DriveTrainEncodersSub;
 	public static ElevatorSubsystem m_ElevatorSub;
 	public static ClawSubsystem m_ClawSub;
 	
@@ -45,13 +45,15 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData(Scheduler.getInstance());
 		
 		m_chooser = new SendableChooser<>();
-		
-		m_DriveTrainSub = new DriveTrainSubsystem();
-		m_ElevatorSub = new ElevatorSubsystem();
-		m_ClawSub = new ClawSubsystem();
 		m_oi = new OI();
 		
-		SmartDashboard.putData(m_DriveTrainSub);
+		m_DriveTrainEncodersSub = new DriveTrainEncoderSubsystem();
+		//m_DriveTrainSub = new DriveTrainSubsystem();
+		m_ElevatorSub = new ElevatorSubsystem();
+		m_ClawSub = new ClawSubsystem();
+
+		
+		//SmartDashboard.putData(m_DriveTrainSub);
 		SmartDashboard.putData(m_ElevatorSub);
 		SmartDashboard.putData(m_ClawSub);
 		SmartDashboard.putData(new ClawDriveIn());
@@ -66,7 +68,8 @@ public class Robot extends TimedRobot {
 		m_oi.X.whenReleased(new SetNormalSpeed());
 		/*
 		m_oi.LT.whileHeld(new ClawDriveOut());
-		m_oi.RT.whileHeld(new ClawDriveIn());*/
+		m_oi.RT.whileHeld(new ClawDriveIn());  
+		*/
 	}
 
 	/**

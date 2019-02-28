@@ -1,7 +1,7 @@
 package org.usfirst.frc.team5571.robot.commands;
 
 import org.usfirst.frc.team5571.robot.Robot;
-import org.usfirst.frc.team5571.robot.subsystems.DriveTrainSubsystem;
+import org.usfirst.frc.team5571.robot.subsystems.DriveTrainEncoderSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class DriveTrainDriveEncoders extends Command {
 	
-	DriveTrainSubsystem SUB;
+	DriveTrainEncoderSubsystem SUB;
 
     public DriveTrainDriveEncoders() {
     	SUB = Robot.m_DriveTrainEncodersSub;
@@ -23,6 +23,7 @@ public class DriveTrainDriveEncoders extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        SUB.arcadeDrive(Robot.m_oi.controller.getY(), 0);
     }
 
     // Make this return true when this Command no longer needs to run execute()

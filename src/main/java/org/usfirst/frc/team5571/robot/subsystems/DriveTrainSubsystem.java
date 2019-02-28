@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import org.usfirst.frc.team5571.robot.commands.*;
 import edu.wpi.first.wpilibj.Encoder;
 
-//import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.PWMTalonSRX;;
 
 public class DriveTrainSubsystem extends Subsystem {
 	
