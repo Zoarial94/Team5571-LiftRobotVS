@@ -29,6 +29,7 @@ public class Robot extends TimedRobot {
 	public static DriveTrainEncoderSubsystem m_DriveTrainEncoderSub;
 	public static ElevatorSubsystem m_ElevatorSub;
 	public static ClawSubsystem m_ClawSub;
+	public static TalonSRXTesting m_TalonSRX;
 	
 	public static OI m_oi;
 
@@ -46,10 +47,11 @@ public class Robot extends TimedRobot {
 		m_chooser = new SendableChooser<>();
 		m_oi = new OI();
 		
-		m_DriveTrainEncoderSub = new DriveTrainEncoderSubsystem();
+		//m_DriveTrainEncoderSub = new DriveTrainEncoderSubsystem();
 		//m_DriveTrainSub = new DriveTrainSubsystem();
 		m_ElevatorSub = new ElevatorSubsystem();
 		m_ClawSub = new ClawSubsystem();
+		m_TalonSRX = new TalonSRXTesting();
 
 		
 		//SmartDashboard.putData(m_DriveTrainSub);
