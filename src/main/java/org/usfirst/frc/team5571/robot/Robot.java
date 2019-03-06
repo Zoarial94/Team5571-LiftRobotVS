@@ -14,7 +14,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team5571.robot.subsystems.*;
-import org.usfirst.frc.team5571.robot.commands.*;
+import org.usfirst.frc.team5571.robot.commands.DriveTrain.*;
+import org.usfirst.frc.team5571.robot.commands.Claw.*;
+import org.usfirst.frc.team5571.robot.commands.Elevator.*;
 import org.usfirst.frc.team5571.robot.commands.Debugging.*;
 
 /**
@@ -40,6 +42,9 @@ public class Robot extends TimedRobot {
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser;
+
+	//Robot Variables
+	public static double m_driveTrainSensitivity = Constants.driveTrainNormalSpeed;
 
 	/**
 	 * This function is run when the robot is first started up and should be

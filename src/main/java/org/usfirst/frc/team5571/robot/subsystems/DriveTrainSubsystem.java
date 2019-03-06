@@ -1,11 +1,12 @@
 package org.usfirst.frc.team5571.robot.subsystems;
 
 import org.usfirst.frc.team5571.robot.Constants;
+import org.usfirst.frc.team5571.robot.Robot;
 import org.usfirst.frc.team5571.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import org.usfirst.frc.team5571.robot.commands.*;
+import org.usfirst.frc.team5571.robot.commands.DriveTrain.DriveTrainDrive;
 import edu.wpi.first.wpilibj.Encoder;
 
 import edu.wpi.first.wpilibj.PWMTalonSRX;;
@@ -15,8 +16,6 @@ public class DriveTrainSubsystem extends Subsystem {
 	DifferentialDrive drive;
 	
 	Encoder leftEncoder, rightEncoder;
-	
-	double sensitivity;
 	
 	public DriveTrainSubsystem() {
 		
@@ -46,8 +45,6 @@ public class DriveTrainSubsystem extends Subsystem {
 		rightEncoder.setReverseDirection(false);
 		rightEncoder.setSamplesToAverage(7);
 		
-		sensitivity = Constants.driveTrainNormalSpeed;
-		
 	}
 	
 	public double getDistanceLeft() {
@@ -59,20 +56,9 @@ public class DriveTrainSubsystem extends Subsystem {
 	}
 	
 	public void arcadeDrive(double x, double y) {
+		double sensitivity = Robot.m_driveTrainSensitivity;
     	drive.arcadeDrive(x * sensitivity, y * sensitivity);
     }
-	
-	public void setSensitivity(double sen) {
-		if(sen > 1.0 || sen < -1.0) {
-			sensitivity = 1;
-		} else {
-			sensitivity = Math.abs(sen);
-		}
-	}
-	
-	public double getSensitivity() {
-		return sensitivity;
-	}
 
 	public void initDefaultCommand() {
 		setDefaultCommand(new DriveTrainDrive());

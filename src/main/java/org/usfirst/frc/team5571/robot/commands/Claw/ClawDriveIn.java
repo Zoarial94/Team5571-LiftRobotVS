@@ -1,4 +1,4 @@
-package org.usfirst.frc.team5571.robot.commands;
+package org.usfirst.frc.team5571.robot.commands.Claw;
 import org.usfirst.frc.team5571.robot.Robot;
 import org.usfirst.frc.team5571.robot.subsystems.ClawSubsystem;
 import edu.wpi.first.wpilibj.command.Command;

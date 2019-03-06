@@ -1,4 +1,4 @@
-package org.usfirst.frc.team5571.robot.commands;
+package org.usfirst.frc.team5571.robot.commands.DriveTrain;
 
 import org.usfirst.frc.team5571.robot.Robot;
 import org.usfirst.frc.team5571.robot.subsystems.*;
@@ -20,7 +20,6 @@ public class DriveTrainDrive extends Command {
     public DriveTrainDrive() {
     	SUB = Robot.m_DriveTrainSub;
     	requires(SUB);
-    	moving = false;
     }
 
     // Called just before this Command runs the first time
@@ -29,10 +28,9 @@ public class DriveTrainDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double sen = SUB.getSensitivity();
     	Robot.m_DriveTrainSub.arcadeDrive(
-    			Robot.m_oi.controller.getY(Hand.kLeft) * sen, 
-    			Robot.m_oi.controller.getX(Hand.kLeft) * sen 
+    			Robot.m_oi.controller.getY(Hand.kLeft), 
+    			Robot.m_oi.controller.getX(Hand.kLeft)
     			);
     	//System.out.println("DISTANCE: " + Robot.m_DriveTrainSub.getDistanceLeft() + " " + Robot.m_DriveTrainSub.getDistanceRight());
     	SmartDashboard.putNumber("DistanceRight", Robot.m_DriveTrainSub.getDistanceRight());

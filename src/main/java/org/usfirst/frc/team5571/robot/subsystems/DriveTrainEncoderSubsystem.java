@@ -4,7 +4,7 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.*;
 
 import org.usfirst.frc.team5571.robot.RobotMap;
-import org.usfirst.frc.team5571.robot.commands.DriveTrainDriveEncoders;
+import org.usfirst.frc.team5571.robot.commands.DriveTrain.DriveTrainDriveEncoders;
 import org.usfirst.frc.team5571.robot.Constants;
 
 import edu.wpi.first.wpilibj.command.Subsystem;

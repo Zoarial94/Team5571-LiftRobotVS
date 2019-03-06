@@ -1,34 +1,32 @@
-package org.usfirst.frc.team5571.robot.commands;
+package org.usfirst.frc.team5571.robot.commands.DriveTrain;
 
 import org.usfirst.frc.team5571.robot.Robot;
-import org.usfirst.frc.team5571.robot.subsystems.DriveTrainEncoderSubsystem;
+import org.usfirst.frc.team5571.robot.Constants;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class DriveTrainDriveEncoders extends Command {
-	
-	DriveTrainEncoderSubsystem SUB;
+public class SetNormalSpeed extends Command {
 
-    public DriveTrainDriveEncoders() {
-    	SUB = Robot.m_DriveTrainEncoderSub;
-        requires(SUB);
+    public SetNormalSpeed() {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.m_driveTrainSensitivity = Constants.driveTrainNormalSpeed;
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        SUB.arcadeDrive(Robot.m_oi.controller.getY(), 0);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true
