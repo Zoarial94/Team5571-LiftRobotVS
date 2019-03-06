@@ -2,6 +2,7 @@ package org.usfirst.frc.team5571.robot.commands;
 
 import org.usfirst.frc.team5571.robot.Robot;
 import org.usfirst.frc.team5571.robot.subsystems.*;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -30,10 +31,10 @@ public class DriveTrainDrive extends Command {
     protected void execute() {
     	double sen = SUB.getSensitivity();
     	Robot.m_DriveTrainSub.arcadeDrive(
-    			Robot.m_oi.controller.getY() * sen, 
-    			Robot.m_oi.controller.getX() * sen 
+    			Robot.m_oi.controller.getY(Hand.kLeft) * sen, 
+    			Robot.m_oi.controller.getX(Hand.kLeft) * sen 
     			);
-    	System.out.println("DISTANCE: " + Robot.m_DriveTrainSub.getDistanceLeft() + " " + Robot.m_DriveTrainSub.getDistanceRight());
+    	//System.out.println("DISTANCE: " + Robot.m_DriveTrainSub.getDistanceLeft() + " " + Robot.m_DriveTrainSub.getDistanceRight());
     	SmartDashboard.putNumber("DistanceRight", Robot.m_DriveTrainSub.getDistanceRight());
     	SmartDashboard.putNumber("DistanceLeft", Robot.m_DriveTrainSub.getDistanceLeft());
     }

@@ -8,6 +8,7 @@
 package org.usfirst.frc.team5571.robot.commands.Debugging;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
+import org.usfirst.frc.team5571.robot.Robot;
 
 /**
  * Add your docs here.
@@ -25,6 +26,7 @@ public class DisableMotorDebugging extends InstantCommand {
   // Called once when the command executes
   @Override
   protected void initialize() {
+    Robot.m_TalonSRX.setDebug(true);
   }
 
 }

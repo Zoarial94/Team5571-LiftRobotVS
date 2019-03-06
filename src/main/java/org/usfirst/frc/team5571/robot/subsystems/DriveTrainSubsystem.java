@@ -1,5 +1,6 @@
 package org.usfirst.frc.team5571.robot.subsystems;
 
+import org.usfirst.frc.team5571.robot.Constants;
 import org.usfirst.frc.team5571.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -45,7 +46,7 @@ public class DriveTrainSubsystem extends Subsystem {
 		rightEncoder.setReverseDirection(false);
 		rightEncoder.setSamplesToAverage(7);
 		
-		sensitivity = 0.6;
+		sensitivity = Constants.driveTrainNormalSpeed;
 		
 	}
 	
@@ -62,7 +63,7 @@ public class DriveTrainSubsystem extends Subsystem {
     }
 	
 	public void setSensitivity(double sen) {
-		if(sen > 1 || sen < -1) {
+		if(sen > 1.0 || sen < -1.0) {
 			sensitivity = 1;
 		} else {
 			sensitivity = Math.abs(sen);

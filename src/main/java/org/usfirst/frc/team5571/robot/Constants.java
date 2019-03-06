@@ -1,11 +1,12 @@
 package org.usfirst.frc.team5571.robot;
+import org.usfirst.frc.team5571.robot.Gains;
 
 public class Constants {
 
 	/**
 	 * Drive Train Constants
 	 */
-	public final static double driveTrainNormalSpeed = 0.3;
+	public final static double driveTrainNormalSpeed = 0.7;
 	public final static double driveTrainMaxSpeed = 1.0;
 
 
@@ -25,7 +26,18 @@ public class Constants {
     /**
 	 * Motor neutral dead-band, set to the minimum 0.1%.
 	 */
-    public final static double kNeutralDeadband = 0.001;
+	public final static double kNeutralDeadband = 0.001;
+	
+	/**
+	 * PID Gains may have to be adjusted based on the responsiveness of control loop.
+     * kF: 1023 represents output value to Talon at 100%, 6800 represents Velocity units at 100% output
+     * Not all set of Gains are used in this project and may be removed as desired.
+     * 
+	 * 	                                    			  kP   kI   kD   kF               Iz    PeakOut */
+	public final static Gains kGains_Distanc = new Gains( 0.1, 0.0,  0.0, 0.0,            100,  0.50 );
+	public final static Gains kGains_Turning = new Gains( 2.0, 0.0,  4.0, 0.0,            200,  1.00 );
+	public final static Gains kGains_Velocit = new Gains( 0.1, 0.0, 20.0, 1023.0/6800.0,  300,  0.50 );
+	public final static Gains kGains_MotProf = new Gains( 1.0, 0.0, 0.0, 1023.0/6800.0, 400, 1.00 );
 
     /** ---- Flat constants, you should not need to change these ---- */
 	/* We allow either a 0 or 1 when selecting an ordinal for remote devices [You can have up to 2 devices assigned remotely to a talon/victor] */

@@ -12,8 +12,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc.team5571.robot.subsystems.*;
 import org.usfirst.frc.team5571.robot.commands.*;
+import org.usfirst.frc.team5571.robot.commands.Debugging.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,12 +26,15 @@ import org.usfirst.frc.team5571.robot.commands.*;
  */
 public class Robot extends TimedRobot {
 	
+
+
 	//Subsystems
 	public static DriveTrainSubsystem m_DriveTrainSub;
 	public static DriveTrainEncoderSubsystem m_DriveTrainEncoderSub;
+	public static TalonSRXTesting m_TalonSRX;
+
 	public static ElevatorSubsystem m_ElevatorSub;
 	public static ClawSubsystem m_ClawSub;
-	public static TalonSRXTesting m_TalonSRX;
 	
 	public static OI m_oi;
 
@@ -47,17 +52,26 @@ public class Robot extends TimedRobot {
 		m_chooser = new SendableChooser<>();
 		m_oi = new OI();
 		
-		//m_DriveTrainEncoderSub = new DriveTrainEncoderSubsystem();
-		//m_DriveTrainSub = new DriveTrainSubsystem();
-		m_ElevatorSub = new ElevatorSubsystem();
-		m_ClawSub = new ClawSubsystem();
-		m_TalonSRX = new TalonSRXTesting();
+		//m_DriveTrainEncoderSub  = new DriveTrainEncoderSubsystem();
+		m_DriveTrainSub         = new DriveTrainSubsystem();
+		m_ElevatorSub           = new ElevatorSubsystem();
+		m_ClawSub               = new ClawSubsystem();
+		//m_TalonSRX              = new TalonSRXTesting();
+		//m_MechanumDriveTrainSub = new MechanumDriveTrain();
 
 		
-		//SmartDashboard.putData(m_DriveTrainSub);
+		 SmartDashboard.putData(m_DriveTrainSub);
+		//SmartDashboard.putData(m_DriveTrainEncoderSub);
+		//SmartDashboard.putData(m_TalonSRX);
 		SmartDashboard.putData(m_ElevatorSub);
 		SmartDashboard.putData(m_ClawSub);
 		SmartDashboard.putData(new ClawDriveIn());
+
+		SmartDashboard.putData(new EnableMotorDebugging());
+		SmartDashboard.putData(new DisableMotorDebugging());
+
+		SmartDashboard.putData(new SetMaximumOverdrive());
+		SmartDashboard.putData(new SetNormalSpeed());
 		
 		m_chooser.addOption("Raise Elevator", new ElevatorRaise());
 		m_chooser.addOption("Lower Elevator", new ElevatorLower());
@@ -65,8 +79,8 @@ public class Robot extends TimedRobot {
 		
 		m_oi.LB.whileHeld(new ElevatorLower());
 		m_oi.RB.whileHeld(new ElevatorRaise());
-		m_oi.X.whenPressed(new SetMaximumOverdrive());
-		m_oi.X.whenReleased(new SetNormalSpeed());
+		m_oi.X.whenActive(new SetMaximumOverdrive());
+		m_oi.X.whenInactive(new SetNormalSpeed());
 		/*
 		m_oi.LT.whileHeld(new ClawDriveOut());
 		m_oi.RT.whileHeld(new ClawDriveIn());  

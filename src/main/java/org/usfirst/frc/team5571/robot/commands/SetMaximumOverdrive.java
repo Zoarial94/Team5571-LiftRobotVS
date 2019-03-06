@@ -17,7 +17,7 @@ public class SetMaximumOverdrive extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.m_DriveTrainEncoderSub.setSensitivity(Constants.driveTrainMaxSpeed);
+    	Robot.m_DriveTrainSub.setSensitivity(Constants.driveTrainMaxSpeed);
     }
 
     // Called repeatedly when this Command is scheduled to run
