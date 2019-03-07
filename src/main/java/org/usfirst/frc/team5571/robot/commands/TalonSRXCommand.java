@@ -10,6 +10,8 @@ package org.usfirst.frc.team5571.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team5571.robot.*;
 import org.usfirst.frc.team5571.robot.subsystems.*;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class TalonSRXCommand extends Command {
@@ -29,10 +31,14 @@ public class TalonSRXCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double sen = SUB.getSensitivity();
+
+		SmartDashboard.putNumber("Talon Sensor Count", Robot.m_TalonSRX.getSensorPosition());
+
+    Robot.m_TalonSRX.setMode(Robot.m_TalonMode.getSelected());
+    
     SUB.arcadeDrive(
-    	Robot.m_oi.controller.getY() * sen, 
-    	Robot.m_oi.controller.getX() * sen 
+    	Robot.m_oi.controller.getY(Hand.kLeft), 
+    	Robot.m_oi.controller.getX(Hand.kLeft)
     );
   }
 

@@ -6,7 +6,7 @@ public class Constants {
 	/**
 	 * Drive Train Constants
 	 */
-	public final static double driveTrainNormalSpeed = 0.7;
+	public final static double driveTrainNormalSpeed = 0.4;
 	public final static double driveTrainMaxSpeed = 1.0;
 
 
@@ -15,7 +15,7 @@ public class Constants {
 	 * Using CTRE Magnetic Encoder.
 	 * @link https://github.com/CrossTheRoadElec/Phoenix-Documentation#what-are-the-units-of-my-sensor
 	 */
-    public final static int kSensorUnitsPerRotation = 4096;
+    public final static int kSensorUnitsPerRotation = 1102;
 
     /**
 	 * Set to zero to skip waiting for confirmation.
@@ -23,10 +23,7 @@ public class Constants {
 	 */
     public final static int kTimeoutMs = 30;
 
-    /**
-	 * Motor neutral dead-band, set to the minimum 0.1%.
-	 */
-	public final static double kNeutralDeadband = 0.001;
+	public final static double kNeutralDeadband = 0.04;
 	
 	/**
 	 * PID Gains may have to be adjusted based on the responsiveness of control loop.
@@ -34,10 +31,10 @@ public class Constants {
      * Not all set of Gains are used in this project and may be removed as desired.
      * 
 	 * 	                                    			  kP   kI   kD   kF               Iz    PeakOut */
-	public final static Gains kGains_Distanc = new Gains( 0.1, 0.0,  0.0, 0.0,            100,  0.50 );
+	public final static Gains kGains_Distanc = new Gains( 0.1, 0.0,  0.0, 0.0,            100,  1.00 );
 	public final static Gains kGains_Turning = new Gains( 2.0, 0.0,  4.0, 0.0,            200,  1.00 );
-	public final static Gains kGains_Velocit = new Gains( 0.1, 0.0, 20.0, 1023.0/6800.0,  300,  0.50 );
-	public final static Gains kGains_MotProf = new Gains( 1.0, 0.0, 0.0, 1023.0/6800.0, 400, 1.00 );
+	public final static Gains kGains_Velocit = new Gains( 2.6, 0.008,  28.0, 1023.0/700.0,   60,  1.00 );
+	public final static Gains kGains_MotProf = new Gains( 1.0, 0.0,  0.0, 1023.0/700.0,   400,  1.00 );
 
     /** ---- Flat constants, you should not need to change these ---- */
 	/* We allow either a 0 or 1 when selecting an ordinal for remote devices [You can have up to 2 devices assigned remotely to a talon/victor] */

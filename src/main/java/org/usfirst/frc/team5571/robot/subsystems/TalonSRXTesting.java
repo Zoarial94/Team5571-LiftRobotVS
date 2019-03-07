@@ -46,7 +46,7 @@ public class TalonSRXTesting extends Subsystem {
 	public TalonSRXTesting() {
 		
 		_sensitivity = 0.6;
-    _driveMode = 1;
+    _driveMode = 0;
     
     //Faults from one Talon Motor
     //Unsure of exact purpose
@@ -62,7 +62,7 @@ public class TalonSRXTesting extends Subsystem {
     _testMotor.setNeutralMode(NeutralMode.Brake); //NeutralMode.Coast
 
     //Invert output
-    _testMotor.setInverted(false);
+    _testMotor.setInverted(true);
     //Invert sensor output
     _testMotor.setSensorPhase(false);
     
@@ -143,6 +143,8 @@ public class TalonSRXTesting extends Subsystem {
     //Use if using aux sensor
     _testMotor.configAuxPIDPolarity(false, Constants.kTimeoutMs);
 
+    _testMotor.configClosedloopRamp(0.12, Constants.kTimeoutMs);
+
 
 	}
 	
@@ -166,7 +168,10 @@ public class TalonSRXTesting extends Subsystem {
 
 		} else if(_driveMode == 11) {
 
+      double target_RPM = speed * 500;	// +- 500 RPM
+      double target_unitsPer100ms = target_RPM * Constants.kSensorUnitsPerRotation / 600.0;
 
+      _testMotor.set(ControlMode.Velocity, target_unitsPer100ms, DemandType.AuxPID, 0);
 
 		} else if(_driveMode == 12) {
 
@@ -202,7 +207,14 @@ public class TalonSRXTesting extends Subsystem {
 	}
 
 	public boolean setMode(int mode) {
-		_driveMode = mode;
+    if(mode == _driveMode){
+      return true;
+    }
+    _driveMode = mode;
+    if(mode == 11) {
+      _testMotor.selectProfileSlot(Constants.kSlot_Velocit, Constants.PID_PRIMARY);
+      //_testMotor.selectProfileSlot(Constants.kSlot_Turning, Constants.PID_TURN);
+    }
 		return true;
 	}
 
@@ -216,6 +228,18 @@ public class TalonSRXTesting extends Subsystem {
   
   public void setDebug(boolean debug) {
     _printDebug = debug;
+  }
+
+  public void zeroSensors() {
+    _testMotor.getSensorCollection().setQuadraturePosition(0, Constants.kTimeoutMs);
+  }
+
+  public int getSensorPosition() {
+    return _testMotor.getSelectedSensorPosition();
+  }
+
+  public int getSensorVelocity() {
+    return _testMotor.getSelectedSensorVelocity();
   }
 
   @Override
