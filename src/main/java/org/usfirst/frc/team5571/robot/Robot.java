@@ -18,7 +18,6 @@ import org.usfirst.frc.team5571.robot.commands.*;
 import org.usfirst.frc.team5571.robot.commands.DriveTrain.*;
 import org.usfirst.frc.team5571.robot.commands.Claw.*;
 import org.usfirst.frc.team5571.robot.commands.Elevator.*;
-import org.usfirst.frc.team5571.robot.commands.Debugging.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -54,7 +53,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		SmartDashboard.putData(Scheduler.getInstance());
+		//SmartDashboard.putData(Scheduler.getInstance());
 		
 		m_chooser = new SendableChooser<>();
 		m_TalonMode = new SendableChooser<>();
@@ -70,9 +69,7 @@ public class Robot extends TimedRobot {
 
 		SmartDashboard.putData(m_ElevatorSub);
 		SmartDashboard.putData(m_ClawSub);
-
-		SmartDashboard.putData(new EnableMotorDebugging());
-		SmartDashboard.putData(new DisableMotorDebugging());
+		SmartDashboard.putData(m_TalonSRX);
 
 		SmartDashboard.putData(new resetSensors());
 
@@ -165,4 +162,22 @@ public class Robot extends TimedRobot {
 	@Override
 	public void testPeriodic() {
 	}
+
+	public static double applyDeadzone(double position) {
+		if(position == 0.0)
+			return 0.0;
+
+		boolean positive = position > 0 ? true : false;
+
+		double abs = Math.abs(position);
+
+		if(abs >= 1) {
+			return positive ? 1 : -1;
+		} else if(abs < Constants.Deadzone) {
+			return 0.0;
+		} else {
+			return positive ? (abs - Constants.Deadzone) / (1.0 - Constants.Deadzone) : -1.0 * ((abs - Constants.Deadzone) / (1.0 - Constants.Deadzone));
+		}
+	}
+
 }

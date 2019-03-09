@@ -9,11 +9,14 @@ package org.usfirst.frc.team5571.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team5571.robot.RobotMap;
+import org.usfirst.frc.team5571.robot.Robot;
 import org.usfirst.frc.team5571.robot.Constants;
 import org.usfirst.frc.team5571.robot.commands.*;
 
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
  *
@@ -37,9 +40,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 public class TalonSRXTesting extends Subsystem {
   
   int       _driveMode;
-	double    _sensitivity;
+	double    _sensitivity, _lastSpeed, _lastTurn;
   TalonSRX  _testMotor;
-  boolean   _printDebug;
 
   Faults _faults;
 	
@@ -62,7 +64,7 @@ public class TalonSRXTesting extends Subsystem {
     _testMotor.setNeutralMode(NeutralMode.Brake); //NeutralMode.Coast
 
     //Invert output
-    _testMotor.setInverted(true);
+    _testMotor.setInverted(false);
     //Invert sensor output
     _testMotor.setSensorPhase(false);
     
@@ -143,12 +145,14 @@ public class TalonSRXTesting extends Subsystem {
     //Use if using aux sensor
     _testMotor.configAuxPIDPolarity(false, Constants.kTimeoutMs);
 
-    _testMotor.configClosedloopRamp(0.12, Constants.kTimeoutMs);
-
+    _testMotor.configClosedloopRamp(0.03, Constants.kTimeoutMs);
 
 	}
 	
-	public void arcadeDrive(double speed, double rotation) {
+	public void arcadeDrive(double speed, double turn) {
+
+    speed = Robot.applyDeadzone(speed);
+    turn = Robot.applyDeadzone(turn);
 
 		if(_driveMode == 0) {
 
@@ -156,7 +160,7 @@ public class TalonSRXTesting extends Subsystem {
 
 		} else if(_driveMode == 1) {
 
-			_testMotor.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, rotation);
+			_testMotor.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, turn);
 
 		} else if(_driveMode == 2) {
 
@@ -168,10 +172,13 @@ public class TalonSRXTesting extends Subsystem {
 
 		} else if(_driveMode == 11) {
 
-      double target_RPM = speed * 500;	// +- 500 RPM
-      double target_unitsPer100ms = target_RPM * Constants.kSensorUnitsPerRotation / 600.0;
+      double targetSpeed = (Constants.driveTrainMaxUnitsPer100ms * Robot.m_driveTrainSensitivity) * speed;
+      double targetTurn = (Constants.driveTrainMaxUnitsPer100ms * Robot.m_driveTrainSensitivity / 2) * turn;
 
-      _testMotor.set(ControlMode.Velocity, target_unitsPer100ms, DemandType.AuxPID, 0);
+      _lastSpeed = targetSpeed;
+      _lastTurn = targetTurn;
+
+      _testMotor.set(ControlMode.Velocity, targetSpeed, DemandType.AuxPID, targetTurn);
 
 		} else if(_driveMode == 12) {
 
@@ -186,15 +193,8 @@ public class TalonSRXTesting extends Subsystem {
 
 
     }
-    
-    _testMotor.getFaults(_faults);
 
-    if (_printDebug) {
-      System.out.println("Sensor Vel:" + _testMotor.getSelectedSensorVelocity());
-      System.out.println("Sensor Pos:" + _testMotor.getSelectedSensorPosition());
-      System.out.println("Out %" + _testMotor.getMotorOutputPercent());
-      System.out.println("Out Of Phase:" + _faults.SensorOutOfPhase);
-    }
+    
 
   }
 	
@@ -213,7 +213,7 @@ public class TalonSRXTesting extends Subsystem {
     _driveMode = mode;
     if(mode == 11) {
       _testMotor.selectProfileSlot(Constants.kSlot_Velocit, Constants.PID_PRIMARY);
-      //_testMotor.selectProfileSlot(Constants.kSlot_Turning, Constants.PID_TURN);
+      _testMotor.selectProfileSlot(Constants.kSlot_Turning, Constants.PID_TURN);
     }
 		return true;
 	}
@@ -224,10 +224,6 @@ public class TalonSRXTesting extends Subsystem {
 	
 	public double getSensitivity() {
 		return _sensitivity;
-  }
-  
-  public void setDebug(boolean debug) {
-    _printDebug = debug;
   }
 
   public void zeroSensors() {
@@ -240,6 +236,30 @@ public class TalonSRXTesting extends Subsystem {
 
   public int getSensorVelocity() {
     return _testMotor.getSelectedSensorVelocity();
+  }
+
+  public double getMotorOutputPercent() {
+    return _testMotor.getMotorOutputPercent();
+  }
+
+  public double getLastSpeed() {
+    return _lastSpeed;
+  }
+  
+  public double getLastTurn() {
+    return _lastTurn;
+  }
+
+  @Override
+  public void initSendable(SendableBuilder builder) {
+    super.initSendable(builder);
+    builder.addDoubleProperty("Sensor Position", this::getSensorPosition, null);
+    builder.addDoubleProperty("Sensor Velocity", this::getSensorVelocity, null);
+    builder.addDoubleProperty("Motor Output", this::getMotorOutputPercent, null);
+    
+    builder.addDoubleProperty("Joystick Output Y", this::getLastSpeed, null);
+    builder.addDoubleProperty("Joystick Output X", this::getLastTurn, null);
+
   }
 
   @Override

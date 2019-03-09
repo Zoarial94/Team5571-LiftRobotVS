@@ -8,7 +8,13 @@ public class Constants {
 	 */
 	public final static double driveTrainNormalSpeed = 0.4;
 	public final static double driveTrainMaxSpeed = 1.0;
+	
+	public final static double driveTrainMaxUnitsPer100ms = 700.0;
 
+	/**
+	 * Controller Constants
+	 */
+	public final static double Deadzone = 0.05;
 
     /**
 	 * How many sensor units per rotation.
@@ -23,7 +29,7 @@ public class Constants {
 	 */
     public final static int kTimeoutMs = 30;
 
-	public final static double kNeutralDeadband = 0.04;
+	public final static double kNeutralDeadband = 0.076;
 	
 	/**
 	 * PID Gains may have to be adjusted based on the responsiveness of control loop.
@@ -32,9 +38,9 @@ public class Constants {
      * 
 	 * 	                                    			  kP   kI   kD   kF               Iz    PeakOut */
 	public final static Gains kGains_Distanc = new Gains( 0.1, 0.0,  0.0, 0.0,            100,  1.00 );
-	public final static Gains kGains_Turning = new Gains( 2.0, 0.0,  4.0, 0.0,            200,  1.00 );
-	public final static Gains kGains_Velocit = new Gains( 2.6, 0.008,  28.0, 1023.0/700.0,   60,  1.00 );
-	public final static Gains kGains_MotProf = new Gains( 1.0, 0.0,  0.0, 1023.0/700.0,   400,  1.00 );
+	public final static Gains kGains_Turning = new Gains( 0.45, 0.02,  16.0, 1023.0/driveTrainMaxUnitsPer100ms,   80,  1.00 );
+	public final static Gains kGains_Velocit = new Gains( 0.45, 0.02,  16.0, 1023.0/driveTrainMaxUnitsPer100ms,   80,  1.00 );
+	public final static Gains kGains_MotProf = new Gains( 1.0, 0.0,  0.0, 1023.0/driveTrainMaxUnitsPer100ms,   400,  1.00 );
 
     /** ---- Flat constants, you should not need to change these ---- */
 	/* We allow either a 0 or 1 when selecting an ordinal for remote devices [You can have up to 2 devices assigned remotely to a talon/victor] */
