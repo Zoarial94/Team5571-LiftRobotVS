@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5571.robot.commands.DriveTrain;
 
 import org.usfirst.frc.team5571.robot.Robot;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import org.usfirst.frc.team5571.robot.subsystems.DriveTrainEncoderSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -23,7 +24,13 @@ public class DriveTrainDriveEncoders extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        SUB.arcadeDrive(Robot.m_oi.controller.getY(), 0);
+
+        SUB.setMode(Robot.m_TalonMode.getSelected());
+
+        SUB.arcadeDrive(
+    	    Robot.m_oi.controller.getY(Hand.kLeft), 
+    	    Robot.m_oi.controller.getX(Hand.kLeft)
+        );
     }
 
     // Make this return true when this Command no longer needs to run execute()

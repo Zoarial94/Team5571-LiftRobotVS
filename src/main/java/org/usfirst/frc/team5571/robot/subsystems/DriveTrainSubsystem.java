@@ -1,8 +1,6 @@
 package org.usfirst.frc.team5571.robot.subsystems;
 
-import org.usfirst.frc.team5571.robot.Constants;
-import org.usfirst.frc.team5571.robot.Robot;
-import org.usfirst.frc.team5571.robot.RobotMap;
+import org.usfirst.frc.team5571.robot.*;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;

@@ -38,8 +38,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  * 
  */
 public class TalonSRXTesting extends Subsystem {
-  
-  int       _driveMode;
+
 	double    _sensitivity, _lastSpeed, _lastTurn;
   TalonSRX  _testMotor;
 
@@ -48,20 +47,19 @@ public class TalonSRXTesting extends Subsystem {
 	public TalonSRXTesting() {
 		
 		_sensitivity = 0.6;
-    _driveMode = 0;
     
     //Faults from one Talon Motor
     //Unsure of exact purpose
     _faults = new Faults();
 
-    //Get can motor
+    //Get CAN motor
     _testMotor = new TalonSRX(RobotMap.TESTING_TALON);
     //Output to zero for safety
     _testMotor.set(ControlMode.PercentOutput, 0);
     //Reset to defaults
     _testMotor.configFactoryDefault();
     //Brake/Coast when output is zero
-    _testMotor.setNeutralMode(NeutralMode.Brake); //NeutralMode.Coast
+    _testMotor.setNeutralMode(NeutralMode.Coast); //NeutralMode.Coast
 
     //Invert output
     _testMotor.setInverted(false);
@@ -154,37 +152,37 @@ public class TalonSRXTesting extends Subsystem {
     speed = Robot.applyDeadzone(speed);
     turn = Robot.applyDeadzone(turn);
 
-		if(_driveMode == 0) {
+		if(Robot.m_driveMode == 0) {
 
 			//Do nothing
 
-		} else if(_driveMode == 1) {
+		} else if(Robot.m_driveMode == 1) {
 
 			_testMotor.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, turn);
 
-		} else if(_driveMode == 2) {
+		} else if(Robot.m_driveMode == 2) {
 
 
 
-		} else if(_driveMode == 3) {
+		} else if(Robot.m_driveMode == 3) {
 
 
 
-		} else if(_driveMode == 11) {
+		} else if(Robot.m_driveMode == 11) {
 
       double targetSpeed = (Constants.driveTrainMaxUnitsPer100ms * Robot.m_driveTrainSensitivity) * speed;
-      double targetTurn = (Constants.driveTrainMaxUnitsPer100ms * Robot.m_driveTrainSensitivity / 2) * turn;
+      double targetTurn = (Constants.driveTrainMaxUnitsPer100ms * Robot.m_driveTrainSensitivity) * turn;
 
       _lastSpeed = targetSpeed;
       _lastTurn = targetTurn;
 
-      _testMotor.set(ControlMode.Velocity, targetSpeed, DemandType.AuxPID, targetTurn);
+      _testMotor.set(ControlMode.Velocity, targetSpeed, DemandType.AuxPID, 0);
 
-		} else if(_driveMode == 12) {
+		} else if(Robot.m_driveMode == 12) {
 
 
 
-		} else if(_driveMode == 13) {
+		} else if(Robot.m_driveMode == 13) {
 
 
 
@@ -207,19 +205,20 @@ public class TalonSRXTesting extends Subsystem {
 	}
 
 	public boolean setMode(int mode) {
-    if(mode == _driveMode){
+    if(mode == Robot.m_driveMode){
       return true;
     }
-    _driveMode = mode;
     if(mode == 11) {
       _testMotor.selectProfileSlot(Constants.kSlot_Velocit, Constants.PID_PRIMARY);
       _testMotor.selectProfileSlot(Constants.kSlot_Turning, Constants.PID_TURN);
+
+      Robot.m_driveMode = mode;
     }
 		return true;
 	}
 
 	public int getMode() {
-		return _driveMode;
+		return Robot.m_driveMode;
 	}
 	
 	public double getSensitivity() {

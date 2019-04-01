@@ -46,6 +46,7 @@ public class Robot extends TimedRobot {
 
 	//Robot Variables
 	public static double m_driveTrainSensitivity = Constants.driveTrainNormalSpeed;
+	public static int m_driveMode;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -60,16 +61,16 @@ public class Robot extends TimedRobot {
 
 		m_oi = new OI();
 		
-		//m_DriveTrainEncoderSub  = new DriveTrainEncoderSubsystem();
-		//m_DriveTrainSub         = new DriveTrainSubsystem();
-		m_ElevatorSub           = new ElevatorSubsystem();
-		m_ClawSub               = new ClawSubsystem();
-		m_TalonSRX              = new TalonSRXTesting();
-		//m_MechanumDriveTrainSub = new MechanumDriveTrain();
+		m_DriveTrainEncoderSub  	= new DriveTrainEncoderSubsystem();
+		//m_DriveTrainSub         	= new DriveTrainSubsystem();
+		m_ElevatorSub           	= new ElevatorSubsystem();
+		m_ClawSub               	= new ClawSubsystem();
+		//m_TalonSRX              	= new TalonSRXTesting();
+		//m_MechanumDriveTrainSub 	= new MechanumDriveTrain();
 
 		SmartDashboard.putData(m_ElevatorSub);
 		SmartDashboard.putData(m_ClawSub);
-		SmartDashboard.putData(m_TalonSRX);
+		SmartDashboard.putData(m_DriveTrainEncoderSub);
 
 		SmartDashboard.putData(new resetSensors());
 
