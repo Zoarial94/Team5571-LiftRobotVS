@@ -14,7 +14,7 @@ public class Constants {
 	/**
 	 * Controller Constants
 	 */
-	public final static double Deadzone = 0.05;
+	public final static double Deadzone = 0.1;
 
     /**
 	 * How many sensor units per rotation.
@@ -38,7 +38,7 @@ public class Constants {
      * 
 	 * 	                                    			  kP   kI   kD   kF               Iz    PeakOut */
 	public final static Gains kGains_Distanc = new Gains( 0.1, 0.0,  0.0, 0.0,            100,  1.00 );
-	public final static Gains kGains_Turning = new Gains( 0.45, 0.02,  16.0, 1023.0/driveTrainMaxUnitsPer100ms,   80,  1.00 );
+	public final static Gains kGains_Turning = new Gains( 0.45, 0.02,  16.0, 1023.0/driveTrainMaxUnitsPer100ms,   80,  0.5 );
 	public final static Gains kGains_Velocit = new Gains( 0.45, 0.02,  16.0, 1023.0/driveTrainMaxUnitsPer100ms,   80,  1.00 );
 	public final static Gains kGains_MotProf = new Gains( 1.0, 0.0,  0.0, 1023.0/driveTrainMaxUnitsPer100ms,   400,  1.00 );
 
