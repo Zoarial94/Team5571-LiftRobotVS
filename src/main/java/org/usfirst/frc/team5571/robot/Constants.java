@@ -14,7 +14,7 @@ public class Constants {
 	/**
 	 * Controller Constants
 	 */
-	public final static double Deadzone = 0.1;
+	public final static double Deadzone = 0.07;
 
     /**
 	 * How many sensor units per rotation.

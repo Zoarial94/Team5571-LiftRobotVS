@@ -32,7 +32,7 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
 
 	double    _sensitivity;
 	TalonSRX  _rightMotor, _leftMotor;
-	double _lastSpeed, _lastTurn;
+	double _lastSpeed, _lastTurn, _lastDistance;
 	
 	public DriveTrainEncoderSubsystem() {
 		
@@ -86,12 +86,20 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
 
       double targetSpeed = (Constants.driveTrainMaxUnitsPer100ms * Robot.m_driveTrainSensitivity) * speed;
       double targetTurn = (Constants.driveTrainMaxUnitsPer100ms * Robot.m_driveTrainSensitivity) * turn * 0.5;
+			
+			//Prevents jitter if going from high throttle to low throttle
+			double newDistance = Math.sqrt(Math.pow(targetSpeed, 2) + Math.pow(targetTurn * 2, 2));
+			if((targetSpeed == 0.0 && _lastTurn == 0.0) || _lastDistance - newDistance > 150) {
+				_leftMotor.set(ControlMode.PercentOutput, 0);
+				_rightMotor.set(ControlMode.PercentOutput, 0);
+			} else {
+				_leftMotor.set(ControlMode.Velocity, -targetSpeed + targetTurn);
+				_rightMotor.set(ControlMode.Velocity, -targetSpeed - targetTurn);
+			}
 
+			_lastDistance = newDistance;
 			_lastSpeed = targetSpeed;
-      _lastTurn = targetTurn;
-
-			_leftMotor.set(ControlMode.Velocity, -targetSpeed, DemandType.AuxPID, targetTurn);
-			_rightMotor.set(ControlMode.Velocity, -targetSpeed, DemandType.AuxPID, targetTurn);
+			_lastTurn = targetTurn;
 
 		} else if(Robot.m_driveMode == 12) {
 
@@ -129,10 +137,10 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
 		}
     if(mode == 11) {
       _rightMotor.selectProfileSlot(Constants.kSlot_Velocit, Constants.PID_PRIMARY);
-			_rightMotor.selectProfileSlot(Constants.kSlot_Turning, Constants.PID_TURN);
+			//_rightMotor.selectProfileSlot(Constants.kSlot_Turning, Constants.PID_TURN);
 
 			_leftMotor.selectProfileSlot(Constants.kSlot_Velocit, Constants.PID_PRIMARY);
-			_leftMotor.selectProfileSlot(Constants.kSlot_Turning, Constants.PID_TURN);
+			//_leftMotor.selectProfileSlot(Constants.kSlot_Turning, Constants.PID_TURN);
 
 			configForConstVelocity();
 
@@ -183,10 +191,10 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
     //Set local quad as Diff0
     //Will be used as "Turning"
     //Diff1 should be a remote sensor and Diff will show the difference between the left and right forward movement
-    _rightMotor.configSensorTerm(SensorTerm.Diff1, FeedbackDevice.RemoteSensor1, Constants.kTimeoutMs);
+    //_rightMotor.configSensorTerm(SensorTerm.Diff1, FeedbackDevice.RemoteSensor1, Constants.kTimeoutMs);
 		_rightMotor.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, Constants.kTimeoutMs);
 
-		_leftMotor.configSensorTerm(SensorTerm.Diff1, FeedbackDevice.RemoteSensor1, Constants.kTimeoutMs);
+		//_leftMotor.configSensorTerm(SensorTerm.Diff1, FeedbackDevice.RemoteSensor1, Constants.kTimeoutMs);
 		_leftMotor.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, Constants.kTimeoutMs);
 
     //Use Sum for the primary PID
