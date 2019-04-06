@@ -5,28 +5,21 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc.team5571.robot.commands;
+package org.usfirst.frc.team5571.robot.subsystems.PlaceHolderSystems;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
-import org.usfirst.frc.team5571.robot.Robot;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import org.usfirst.frc.team5571.robot.commands.DriveTrain.*;
 
 /**
  * Add your docs here.
  */
-public class resetSensors extends InstantCommand {
-  /**
-   * Add your docs here.
-   */
-  public resetSensors() {
-    super();
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-  }
+public class DriveTrainSensitivity extends Subsystem {
+  // Put methods for controlling this subsystem
+  // here. Call these from Commands.
 
-  // Called once when the command executes
   @Override
-  protected void initialize() {
-    Robot.m_DriveTrainEncoderSub.zeroSensors();
+  public void initDefaultCommand() {
+    // Set the default command for a subsystem here.
+    setDefaultCommand(new SetNormalSpeed());
   }
-
 }

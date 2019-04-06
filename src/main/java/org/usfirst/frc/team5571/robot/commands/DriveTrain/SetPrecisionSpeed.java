@@ -11,8 +11,8 @@ import org.usfirst.frc.team5571.robot.*;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class SetNormalSpeed extends Command {
-  public SetNormalSpeed() {
+public class SetPrecisionSpeed extends Command {
+  public SetPrecisionSpeed() {
     requires(Robot.m_DTSens);
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -21,7 +21,7 @@ public class SetNormalSpeed extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.m_driveTrainSensitivity = Constants.driveTrainNormalSpeed;
+    Robot.m_driveTrainSensitivity = Constants.driveTrainSlowSpeed;
   }
 
   // Called repeatedly when this Command is scheduled to run

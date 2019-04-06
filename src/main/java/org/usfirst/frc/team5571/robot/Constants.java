@@ -6,6 +6,7 @@ public class Constants {
 	/**
 	 * Drive Train Constants
 	 */
+	public final static double driveTrainSlowSpeed = 0.10;
 	public final static double driveTrainNormalSpeed = 0.4;
 	public final static double driveTrainMaxSpeed = 1.0;
 	

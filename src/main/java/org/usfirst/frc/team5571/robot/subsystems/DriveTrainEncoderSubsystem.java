@@ -33,6 +33,14 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
 	double    _sensitivity;
 	TalonSRX  _rightMotor, _leftMotor;
 	double _lastSpeed, _lastTurn, _lastDistance;
+	boolean _turnAroundCenter;
+	
+	/**
+	 * 0 - Stopped
+	 * 1 - Moving
+	 * 2 - Coasting/Braking
+	 */
+	int _drivingStatus;
 	
 	public DriveTrainEncoderSubsystem() {
 		
@@ -57,6 +65,8 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
     //Invert sensor output
 		_rightMotor.setSensorPhase(false);
 		_leftMotor.setSensorPhase(false);
+
+		_turnAroundCenter = false;
     
 	}
 	
@@ -85,16 +95,48 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
 		} else if(Robot.m_driveMode == 11) {
 
       double targetSpeed = (Constants.driveTrainMaxUnitsPer100ms * Robot.m_driveTrainSensitivity) * speed;
-      double targetTurn = (Constants.driveTrainMaxUnitsPer100ms * Robot.m_driveTrainSensitivity) * turn * 0.5;
+			double targetTurn = (Constants.driveTrainMaxUnitsPer100ms * Robot.m_driveTrainSensitivity) * turn * 0.5;
 			
+			if(_turnAroundCenter) {
+				targetSpeed = 0;
+			}
+			
+			double leftMotorSpeed = -targetSpeed + targetTurn;
+			double rightMotorSpeed = -targetSpeed - targetTurn;
+
 			//Prevents jitter if going from high throttle to low throttle
 			double newDistance = Math.sqrt(Math.pow(targetSpeed, 2) + Math.pow(targetTurn * 2, 2));
-			if((targetSpeed == 0.0 && _lastTurn == 0.0) || _lastDistance - newDistance > 150) {
-				_leftMotor.set(ControlMode.PercentOutput, 0);
-				_rightMotor.set(ControlMode.PercentOutput, 0);
+
+			if(newDistance > 0) {
+				_drivingStatus = 1;
+			} 
+			
+			if(_drivingStatus == 0) {
+				_leftMotor.set(ControlMode.Velocity, 0);
+				_rightMotor.set(ControlMode.Velocity, 0);
+
+			} else if((newDistance == 0.0) || _lastDistance - newDistance > 150) {
+				
+				if((getSensorVelocityLeft() == 0 && getSensorVelocityRight() == 0)) {
+
+					_drivingStatus = 0;
+					_leftMotor.set(ControlMode.Velocity, 0);
+					_rightMotor.set(ControlMode.Velocity, 0);
+
+				} else {
+
+					_drivingStatus = 2;
+					_leftMotor.set(ControlMode.Velocity, 0);
+					_rightMotor.set(ControlMode.Velocity, 0);
+
+				}
+
 			} else {
-				_leftMotor.set(ControlMode.Velocity, -targetSpeed + targetTurn);
-				_rightMotor.set(ControlMode.Velocity, -targetSpeed - targetTurn);
+
+				_drivingStatus = 1;
+				_leftMotor.set(ControlMode.Velocity, leftMotorSpeed);
+				_rightMotor.set(ControlMode.Velocity, rightMotorSpeed);
+
 			}
 
 			_lastDistance = newDistance;
@@ -305,6 +347,21 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
 		_rightMotor.configClosedloopRamp(0.03, Constants.kTimeoutMs);
 		_leftMotor.configClosedloopRamp(0.03, Constants.kTimeoutMs);
 	}
+
+	public void zeroSensors() {
+		_leftMotor.getSensorCollection().setQuadraturePosition(0, Constants.kTimeoutMs);
+		_rightMotor.getSensorCollection().setQuadraturePosition(0, Constants.kTimeoutMs);
+	}
+	
+	public void setTurnAroundCenter(boolean b) {
+		_turnAroundCenter = b;
+	}
+
+	/**
+	 * 
+	 * Functions for getting information
+	 * 
+	 */
 
 	public int getSensorPositionRight() {
     return _rightMotor.getSelectedSensorPosition();

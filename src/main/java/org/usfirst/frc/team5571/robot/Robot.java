@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team5571.robot.subsystems.*;
+import org.usfirst.frc.team5571.robot.subsystems.PlaceHolderSystems.*;
 import org.usfirst.frc.team5571.robot.commands.*;
 import org.usfirst.frc.team5571.robot.commands.DriveTrain.*;
 import org.usfirst.frc.team5571.robot.commands.Claw.*;
@@ -38,6 +39,9 @@ public class Robot extends TimedRobot {
 	public static ElevatorSubsystem m_ElevatorSub;
 	public static ClawSubsystem m_ClawSub;
 	
+	//Place Holder Subsystems
+	public static DriveTrainSensitivity m_DTSens;
+
 	public static OI m_oi;
 
 	Command m_autonomousCommand;
@@ -68,9 +72,12 @@ public class Robot extends TimedRobot {
 		//m_TalonSRX              	= new TalonSRXTesting();
 		//m_MechanumDriveTrainSub 	= new MechanumDriveTrain();
 
+		m_DTSens = new DriveTrainSensitivity();
+
 		SmartDashboard.putData(m_ElevatorSub);
 		SmartDashboard.putData(m_ClawSub);
 		SmartDashboard.putData(m_DriveTrainEncoderSub);
+		SmartDashboard.putData(m_DTSens);
 
 		SmartDashboard.putData(new resetSensors());
 
@@ -85,8 +92,14 @@ public class Robot extends TimedRobot {
 		
 		m_oi.LB.whileHeld(new ElevatorLower());
 		m_oi.RB.whileHeld(new ElevatorRaise());
-		m_oi.X.whenPressed(new SetMaximumOverdrive());
-		m_oi.X.whenReleased(new SetNormalSpeed());
+
+		m_oi.B.whileHeld(new SetPrecisionSpeed());
+		m_oi.X.whileHeld(new SetMaximumOverdrive());
+
+		Command temp = new TurnAroundCenter();
+		m_oi.SIDE.toggleWhenPressed(temp);
+
+
 		/*
 		m_oi.LT.whileHeld(new ClawDriveOut());
 		m_oi.RT.whileHeld(new ClawDriveIn());  

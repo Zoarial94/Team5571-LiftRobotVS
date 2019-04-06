@@ -7,13 +7,12 @@
 
 package org.usfirst.frc.team5571.robot.commands.DriveTrain;
 
-import org.usfirst.frc.team5571.robot.*;
-
 import edu.wpi.first.wpilibj.command.Command;
 
-public class SetNormalSpeed extends Command {
-  public SetNormalSpeed() {
-    requires(Robot.m_DTSens);
+import org.usfirst.frc.team5571.robot.*;
+
+public class TurnAroundCenter extends Command {
+  public TurnAroundCenter() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -21,7 +20,7 @@ public class SetNormalSpeed extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.m_driveTrainSensitivity = Constants.driveTrainNormalSpeed;
+    Robot.m_DriveTrainEncoderSub.setTurnAroundCenter(true);
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -38,11 +37,13 @@ public class SetNormalSpeed extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.m_DriveTrainEncoderSub.setTurnAroundCenter(false);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.m_DriveTrainEncoderSub.setTurnAroundCenter(false);
   }
 }
