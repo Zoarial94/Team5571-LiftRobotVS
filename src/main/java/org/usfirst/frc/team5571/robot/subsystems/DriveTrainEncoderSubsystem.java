@@ -357,6 +357,16 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
 		_turnAroundCenter = b;
 	}
 
+	public void setMotorCoast(boolean b) {
+		if(b) {
+			_rightMotor.setNeutralMode(NeutralMode.Coast);
+			_leftMotor.setNeutralMode(NeutralMode.Coast); 
+		} else {
+			_rightMotor.setNeutralMode(NeutralMode.Brake);
+			_leftMotor.setNeutralMode(NeutralMode.Brake); 
+		}
+	}
+
 	/**
 	 * 
 	 * Functions for getting information

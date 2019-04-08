@@ -90,8 +90,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("Auto Mode", m_chooser);
 		SmartDashboard.putData("Talon Mode", m_TalonMode);
 		
-		m_oi.LB.whileHeld(new ElevatorLower());
-		m_oi.RB.whileHeld(new ElevatorRaise());
+		//m_oi.LB.whileHeld(new ElevatorLower());
+		//m_oi.RB.whileHeld(new ElevatorRaise());
 
 		m_oi.B.whileHeld(new SetPrecisionSpeed());
 		m_oi.X.whileHeld(new SetMaximumOverdrive());
@@ -99,6 +99,8 @@ public class Robot extends TimedRobot {
 		Command temp = new TurnAroundCenter();
 		m_oi.SIDE.toggleWhenPressed(temp);
 
+		m_oi.BRAKE.whenPressed(new SetBraking());
+		m_oi.COAST.whenPressed(new SetCoasting());
 
 		/*
 		m_oi.LT.whileHeld(new ClawDriveOut());

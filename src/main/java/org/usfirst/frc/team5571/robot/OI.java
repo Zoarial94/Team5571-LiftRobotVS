@@ -22,5 +22,7 @@ public class OI {
 				  		  RB = new JoystickButton(controller, 6),
 						  X = new JoystickButton(controller, 3),
 						  B = new JoystickButton(controller, 4),
-						  SIDE = new JoystickButton(controller, 2);
+						  SIDE = new JoystickButton(controller, 2),
+						  BRAKE = new JoystickButton(controller, 5),
+						  COAST = new JoystickButton(controller, 6);
 }
