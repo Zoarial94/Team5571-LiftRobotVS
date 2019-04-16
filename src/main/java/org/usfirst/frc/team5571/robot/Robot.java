@@ -7,11 +7,16 @@
 
 package org.usfirst.frc.team5571.robot;
 
+import java.util.Vector;
+
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 import org.usfirst.frc.team5571.robot.subsystems.*;
 import org.usfirst.frc.team5571.robot.subsystems.PlaceHolderSystems.*;
@@ -48,6 +53,8 @@ public class Robot extends TimedRobot {
 	SendableChooser<Command> m_chooser;
 	public static SendableChooser<Integer> m_TalonMode;
 
+	public static Vector<QueueCommand> m_queue;
+
 	//Robot Variables
 	public static double m_driveTrainSensitivity = Constants.driveTrainNormalSpeed;
 	public static int m_driveMode;
@@ -59,6 +66,9 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		//SmartDashboard.putData(Scheduler.getInstance());
+
+		m_queue = new Vector<QueueCommand>();
+		m_queue.add(new QueueCommand(0, 100));
 		
 		m_chooser = new SendableChooser<>();
 		m_TalonMode = new SendableChooser<>();
@@ -74,15 +84,17 @@ public class Robot extends TimedRobot {
 
 		m_DTSens = new DriveTrainSensitivity();
 
+		ShuffleboardTab tab = Shuffleboard.getTab("Drive Train");
+		tab.add("DriveT Train Mode", m_TalonMode);
+
 		SmartDashboard.putData(m_ElevatorSub);
 		SmartDashboard.putData(m_ClawSub);
-		SmartDashboard.putData(m_DriveTrainEncoderSub);
-		SmartDashboard.putData(m_DTSens);
 
 		SmartDashboard.putData(new resetSensors());
 
-		m_TalonMode.addOption("1", 1);
-		m_TalonMode.addOption("11", 11);
+		m_TalonMode.addOption("Percent Output", 1);
+		m_TalonMode.addOption("Constant Velocity", 11);
+		m_TalonMode.addOption("Position Queue", 12);
 		m_TalonMode.setDefaultOption("11", 11);
 		
 		m_chooser.addOption("Raise Elevator", new ElevatorRaise());

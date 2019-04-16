@@ -12,6 +12,8 @@ public class Constants {
 	
 	public final static double driveTrainMaxUnitsPer100ms = 700.0;
 
+	public final static int unitsFor90Turn = 100;
+
 	/**
 	 * Controller Constants
 	 */

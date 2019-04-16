@@ -1,9 +1,12 @@
 package org.usfirst.frc.team5571.robot.subsystems;
 
+import java.util.Date;
+
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.*;
 
 import org.usfirst.frc.team5571.robot.*;
+import org.usfirst.frc.team5571.robot.commands.resetSensors;
 import org.usfirst.frc.team5571.robot.commands.DriveTrain.DriveTrainDriveEncoders;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -34,6 +37,9 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
 	TalonSRX  _rightMotor, _leftMotor;
 	double _lastSpeed, _lastTurn, _lastDistance;
 	boolean _turnAroundCenter;
+	QueueCommand _currentCommand;
+	long _time;
+	Date _date;
 	
 	/**
 	 * 0 - Stopped
@@ -43,6 +49,8 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
 	int _drivingStatus;
 	
 	public DriveTrainEncoderSubsystem() {
+
+		_date = new Date();
 		
 		_sensitivity = 0.6;
 
@@ -50,9 +58,8 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
 		_rightMotor = new TalonSRX(RobotMap.DRIVETRAIN_RIGHTTALON);
 		_leftMotor = new TalonSRX(RobotMap.DRIVETRAIN_LEFTTALON);
 		
-    //Output to zero for safety
-		_rightMotor.set(ControlMode.PercentOutput, 0);
-		_leftMotor.set(ControlMode.PercentOutput, 0);
+		//Output to zero for safety
+		stopMotors();
     //Reset to defaults
 		_rightMotor.configFactoryDefault();
 		_leftMotor.configFactoryDefault();
@@ -126,8 +133,8 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
 				} else {
 
 					_drivingStatus = 2;
-					_leftMotor.set(ControlMode.Velocity, 0);
-					_rightMotor.set(ControlMode.Velocity, 0);
+					_leftMotor.set(ControlMode.PercentOutput, 0);
+					_rightMotor.set(ControlMode.PercentOutput, 0);
 
 				}
 
@@ -145,7 +152,38 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
 
 		} else if(Robot.m_driveMode == 12) {
 
+			if(_currentCommand == null && !Robot.m_queue.isEmpty()) {
 
+				_currentCommand = Robot.m_queue.firstElement();
+				zeroSensors();
+				_drivingStatus = 1;
+
+			} else if(_currentCommand == null && Robot.m_queue.isEmpty()) {
+
+				_drivingStatus = 0;
+				stopMotors();
+				return;
+
+			} 
+
+			int rightValue = _currentCommand.getRightTargetValue();
+			int leftValue = _currentCommand.getLeftTargetValue();
+
+			_leftMotor.set(ControlMode.Position, leftValue);
+			_rightMotor.set(ControlMode.Position, rightValue);
+
+			if(getSensorPositionLeft() == leftValue && getSensorPositionRight() == rightValue) {
+				if (_time == -1) {
+					_time = _date.getTime();
+				}
+			} else {
+				_time = -1;
+			}
+
+			if(_time != -1 && _date.getTime() - _time >= 300) {
+				Robot.m_queue.remove(0);
+				_currentCommand = null;
+			}
 
 		} else if(Robot.m_driveMode == 13) {
 
@@ -176,8 +214,7 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
 		
 		if(mode == 1) {
 			Robot.m_driveMode = mode;
-		}
-    if(mode == 11) {
+		} else if(mode == 11) {
       _rightMotor.selectProfileSlot(Constants.kSlot_Velocit, Constants.PID_PRIMARY);
 			//_rightMotor.selectProfileSlot(Constants.kSlot_Turning, Constants.PID_TURN);
 
@@ -187,7 +224,18 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
 			configForConstVelocity();
 
 			Robot.m_driveMode = mode;
-    }
+    } else if(mode == 12) {
+
+			zeroSensors();
+			_time = -1;
+
+			_rightMotor.selectProfileSlot(Constants.kSlot_Velocit, Constants.PID_PRIMARY);
+			_leftMotor.selectProfileSlot(Constants.kSlot_Velocit, Constants.PID_PRIMARY);
+
+			configForPosition();
+
+			Robot.m_driveMode = mode;
+		}
 		return true;
 	}
 
@@ -197,6 +245,17 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
 	
 	public double getSensitivity() {
 		return _sensitivity;
+	}
+
+	private void configForPosition() {
+
+		configForConstVelocity();
+
+		_leftMotor.configPeakOutputForward(+1.0 * Constants.driveTrainNormalSpeed, Constants.kTimeoutMs);
+		_leftMotor.configPeakOutputReverse(-1.0 * Constants.driveTrainNormalSpeed, Constants.kTimeoutMs);
+		_rightMotor.configPeakOutputForward(+1.0 * Constants.driveTrainNormalSpeed, Constants.kTimeoutMs);
+		_rightMotor.configPeakOutputReverse(-1.0 * Constants.driveTrainNormalSpeed, Constants.kTimeoutMs);
+
 	}
 
 	private void configForConstVelocity() {
@@ -365,6 +424,13 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
 			_rightMotor.setNeutralMode(NeutralMode.Brake);
 			_leftMotor.setNeutralMode(NeutralMode.Brake); 
 		}
+	}
+
+	public void stopMotors() {
+
+		_rightMotor.set(ControlMode.PercentOutput, 0);
+		_leftMotor.set(ControlMode.PercentOutput, 0);
+
 	}
 
 	/**
