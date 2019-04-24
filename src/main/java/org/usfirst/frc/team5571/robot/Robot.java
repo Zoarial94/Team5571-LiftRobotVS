@@ -95,7 +95,7 @@ public class Robot extends TimedRobot {
 		m_TalonMode.addOption("Percent Output", 1);
 		m_TalonMode.addOption("Constant Velocity", 11);
 		m_TalonMode.addOption("Position Queue", 12);
-		m_TalonMode.setDefaultOption("11", 11);
+		m_TalonMode.setDefaultOption("Constant Velocity", 11);
 		
 		m_chooser.addOption("Raise Elevator", new ElevatorRaise());
 		m_chooser.addOption("Lower Elevator", new ElevatorLower());

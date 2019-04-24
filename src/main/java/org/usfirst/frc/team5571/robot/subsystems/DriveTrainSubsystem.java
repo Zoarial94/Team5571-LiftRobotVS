@@ -13,8 +13,6 @@ public class DriveTrainSubsystem extends Subsystem {
 	
 	DifferentialDrive drive;
 	
-	Encoder leftEncoder, rightEncoder;
-	
 	public DriveTrainSubsystem() {
 		
 		drive = new DifferentialDrive(
@@ -24,33 +22,8 @@ public class DriveTrainSubsystem extends Subsystem {
 		
 		//Check https://wpilib.screenstepslive.com/s/currentCS/m/java/l/599717-encoders-measuring-rotation-of-a-wheel-or-other-shaft
 		//for info on encoders
-		
-		leftEncoder = new Encoder(RobotMap.DRIVETRAIN_LEFTENCODER_A,  RobotMap.DRIVETRAIN_LEFTENCODER_B,
-								  false, Encoder.EncodingType.k4X); //Initialize Encoder
-		
-		leftEncoder.setMaxPeriod(.1);           //Time in seconds before timeout
-		leftEncoder.setMinRate(10);   			//Rate considered stopped
-		leftEncoder.setDistancePerPulse(5);		//Distance per pulse, based off of gear ratios
-		leftEncoder.setReverseDirection(true); 	
-		leftEncoder.setSamplesToAverage(7);		//???
-		
-		rightEncoder = new Encoder(RobotMap.DRIVETRAIN_RIGHTENCODER_A,  RobotMap.DRIVETRAIN_RIGHTENCODER_B,
-								   false, Encoder.EncodingType.k4X);
-		
-		rightEncoder.setMaxPeriod(.1); 
-		rightEncoder.setMinRate(10);
-		rightEncoder.setDistancePerPulse(5);
-		rightEncoder.setReverseDirection(false);
-		rightEncoder.setSamplesToAverage(7);
-		
-	}
 	
-	public double getDistanceLeft() {
-		return leftEncoder.getDistance();
-	}
-	
-	public double getDistanceRight() {
-		return rightEncoder.getDistance();
+		
 	}
 	
 	public void arcadeDrive(double x, double y) {

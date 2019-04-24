@@ -23,7 +23,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  * Mode 2  - Constant Velocity
  * Mode 3  - Set Distance
  *  -- Uses PID
- * Mode 11 - Arcade Drive
  * Mode 12 - Constant Velocity
  * Mode 13 - Set Distance
  * 

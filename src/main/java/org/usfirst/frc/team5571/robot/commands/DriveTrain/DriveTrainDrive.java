@@ -32,9 +32,6 @@ public class DriveTrainDrive extends Command {
     			Robot.m_oi.controller.getY(Hand.kLeft), 
     			Robot.m_oi.controller.getX(Hand.kLeft)
     			);
-    	//System.out.println("DISTANCE: " + Robot.m_DriveTrainSub.getDistanceLeft() + " " + Robot.m_DriveTrainSub.getDistanceRight());
-    	SmartDashboard.putNumber("DistanceRight", Robot.m_DriveTrainSub.getDistanceRight());
-    	SmartDashboard.putNumber("DistanceLeft", Robot.m_DriveTrainSub.getDistanceLeft());
     }
 
     // Make this return true when this Command no longer needs to run execute()
