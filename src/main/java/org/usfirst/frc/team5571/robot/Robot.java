@@ -68,7 +68,10 @@ public class Robot extends TimedRobot {
 		//SmartDashboard.putData(Scheduler.getInstance());
 
 		m_queue = new Vector<QueueCommand>();
-		m_queue.add(new QueueCommand(0, 100));
+		m_queue.add(new QueueCommand(0, 1000));
+		m_queue.add(new QueueCommand(1, 1000));
+		m_queue.add(new QueueCommand(0, -1000));
+		m_queue.add(new QueueCommand(1, -1000));
 		
 		m_chooser = new SendableChooser<>();
 		m_TalonMode = new SendableChooser<>();
@@ -95,7 +98,7 @@ public class Robot extends TimedRobot {
 		m_TalonMode.addOption("Percent Output", 1);
 		m_TalonMode.addOption("Constant Velocity", 11);
 		m_TalonMode.addOption("Position Queue", 12);
-		m_TalonMode.setDefaultOption("Constant Velocity", 11);
+		m_TalonMode.setDefaultOption("Queue", 12);
 		
 		m_chooser.addOption("Raise Elevator", new ElevatorRaise());
 		m_chooser.addOption("Lower Elevator", new ElevatorLower());

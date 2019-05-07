@@ -36,7 +36,11 @@ public class QueueCommand {
     }
 
     public int getLeftTargetValue() {
-        return _value * _type;
+        if(_type == 1) {
+            return _value * -1;
+        } else {
+            return _value;
+        }
     }
 
     public int getRightTargetValue() {

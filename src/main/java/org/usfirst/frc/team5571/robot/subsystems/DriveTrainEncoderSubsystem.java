@@ -171,17 +171,31 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
 			_leftMotor.set(ControlMode.Position, leftValue);
 			_rightMotor.set(ControlMode.Position, rightValue);
 
-			if(getSensorPositionLeft() == leftValue && getSensorPositionRight() == rightValue) {
+			if(Math.abs(getSensorPositionLeft() - leftValue) <= 10 && Math.abs(getSensorPositionRight() - rightValue) <= 10) {
 				if (_time == -1) {
-					_time = _date.getTime();
+					_time = System.currentTimeMillis();
 				}
 			} else {
 				_time = -1;
 			}
 
-			if(_time != -1 && _date.getTime() - _time >= 300) {
+			System.out.println("Left:  " + getSensorPositionLeft());
+			System.out.println("Right: " + getSensorPositionRight());
+
+			long time = System.currentTimeMillis();
+
+			System.out.println("Start Time:   " + _time);
+			System.out.println("Current Time: " + time);
+			System.out.println("Time Difference: " + String.valueOf(time - _time));
+
+
+			if(_time != -1 && time - _time >= 1500) {
 				Robot.m_queue.remove(0);
 				_currentCommand = null;
+			} else {
+
+				
+
 			}
 
 		} else if(Robot.m_driveMode == 13) {
@@ -228,10 +242,12 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
 			zeroSensors();
 			_time = -1;
 
-			_rightMotor.selectProfileSlot(Constants.kSlot_Velocit, Constants.PID_PRIMARY);
-			_leftMotor.selectProfileSlot(Constants.kSlot_Velocit, Constants.PID_PRIMARY);
-
+			
 			configForPosition();
+
+			_rightMotor.selectProfileSlot(Constants.kSlot_Distanc, Constants.PID_PRIMARY);
+			_leftMotor.selectProfileSlot(Constants.kSlot_Distanc, Constants.PID_PRIMARY);
+
 
 			Robot.m_driveMode = mode;
 		}
@@ -254,6 +270,22 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
 		_leftMotor.configPeakOutputReverse(-1.0 * Constants.driveTrainNormalSpeed, Constants.kTimeoutMs);
 		_rightMotor.configPeakOutputForward(+1.0 * Constants.driveTrainNormalSpeed, Constants.kTimeoutMs);
 		_rightMotor.configPeakOutputReverse(-1.0 * Constants.driveTrainNormalSpeed, Constants.kTimeoutMs);
+
+		_rightMotor.config_kP(Constants.kSlot_Distanc , Constants.kGains_Distanc.kP, Constants.kTimeoutMs);
+		_rightMotor.config_kI(Constants.kSlot_Distanc, Constants.kGains_Distanc.kI, Constants.kTimeoutMs);
+		_rightMotor.config_kD(Constants.kSlot_Distanc, Constants.kGains_Distanc.kD, Constants.kTimeoutMs);
+		_rightMotor.config_kF(Constants.kSlot_Distanc, Constants.kGains_Distanc.kF, Constants.kTimeoutMs);
+		_rightMotor.config_IntegralZone(Constants.kSlot_Distanc, Constants.kGains_Distanc.kIzone, Constants.kTimeoutMs);
+		_rightMotor.configClosedLoopPeakOutput(Constants.kSlot_Distanc, Constants.kGains_Distanc.kPeakOutput, Constants.kTimeoutMs);
+		_rightMotor.configAllowableClosedloopError(Constants.kSlot_Distanc, 4, Constants.kTimeoutMs);
+		
+		_leftMotor.config_kP(Constants.kSlot_Distanc, Constants.kGains_Distanc.kP, Constants.kTimeoutMs);
+		_leftMotor.config_kI(Constants.kSlot_Distanc, Constants.kGains_Distanc.kI, Constants.kTimeoutMs);
+		_leftMotor.config_kD(Constants.kSlot_Distanc, Constants.kGains_Distanc.kD, Constants.kTimeoutMs);
+		_leftMotor.config_kF(Constants.kSlot_Distanc, Constants.kGains_Distanc.kF, Constants.kTimeoutMs);
+		_leftMotor.config_IntegralZone(Constants.kSlot_Distanc, Constants.kGains_Distanc.kIzone, Constants.kTimeoutMs);
+		_leftMotor.configClosedLoopPeakOutput(Constants.kSlot_Distanc, Constants.kGains_Distanc.kPeakOutput, Constants.kTimeoutMs);
+    _leftMotor.configAllowableClosedloopError(Constants.kSlot_Distanc, 4, Constants.kTimeoutMs);
 
 	}
 

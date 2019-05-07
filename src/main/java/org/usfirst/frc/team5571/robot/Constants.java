@@ -12,7 +12,7 @@ public class Constants {
 	
 	public final static double driveTrainMaxUnitsPer100ms = 700.0;
 
-	public final static int unitsFor90Turn = 100;
+	public final static int unitsFor90Turn = 740;
 
 	/**
 	 * Controller Constants
@@ -40,7 +40,7 @@ public class Constants {
      * Not all set of Gains are used in this project and may be removed as desired.
      * 
 	 * 	                                    			  kP   kI   kD   kF               Iz    PeakOut */
-	public final static Gains kGains_Distanc = new Gains( 0.1, 0.0,  0.0, 0.0,            100,  1.00 );
+	public final static Gains kGains_Distanc = new Gains( 2, 0.02,  2.0, 0,   60,  0.20 );
 	public final static Gains kGains_Turning = new Gains( 0.45, 0.02,  16.0, 1023.0/driveTrainMaxUnitsPer100ms,   80,  0.5 );
 	public final static Gains kGains_Velocit = new Gains( 0.45, 0.02,  16.0, 1023.0/driveTrainMaxUnitsPer100ms,   80,  1.00 );
 	public final static Gains kGains_MotProf = new Gains( 1.0, 0.0,  0.0, 1023.0/driveTrainMaxUnitsPer100ms,   400,  1.00 );
