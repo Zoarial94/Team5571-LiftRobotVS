@@ -6,7 +6,6 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.*;
 
 import org.usfirst.frc.team5571.robot.*;
-import org.usfirst.frc.team5571.robot.commands.resetSensors;
 import org.usfirst.frc.team5571.robot.commands.DriveTrain.DriveTrainDriveEncoders;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -299,17 +298,6 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
 		_leftMotor.configSelectedFeedbackSensor(	FeedbackDevice.QuadEncoder, 			// Local Feedback Source
 																							Constants.PID_PRIMARY,					// PID Slot for Source [0, 1]
 																							Constants.kTimeoutMs); 
-
-		_rightMotor.configRemoteFeedbackFilter(		_leftMotor.getDeviceID(),					// Device ID of Source
-																							RemoteSensorSource.TalonSRX_SelectedSensor,	// Remote Feedback Source
-																							Constants.REMOTE_1,						// Source number [0, 1]
-																							Constants.kTimeoutMs); // Configuration Timeout
-
-		_leftMotor.configRemoteFeedbackFilter(		_rightMotor.getDeviceID(),					// Device ID of Source
-																							RemoteSensorSource.TalonSRX_SelectedSensor,	// Remote Feedback Source
-																							Constants.REMOTE_1,						// Source number [0, 1]
-																							Constants.kTimeoutMs); // Configuration Timeout
-    
     //There are two SensorTerms: Sum and Diff
     //Sum will equal Sum0 + Sum1
     //Diff will equal Diff0 - Diff1
@@ -319,15 +307,6 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
 		_rightMotor.configSensorTerm(SensorTerm.Sum0, FeedbackDevice.QuadEncoder, Constants.kTimeoutMs);
 		
     _leftMotor.configSensorTerm(SensorTerm.Sum0, FeedbackDevice.QuadEncoder, Constants.kTimeoutMs);
-    
-    //Set local quad as Diff0
-    //Will be used as "Turning"
-    //Diff1 should be a remote sensor and Diff will show the difference between the left and right forward movement
-    //_rightMotor.configSensorTerm(SensorTerm.Diff1, FeedbackDevice.RemoteSensor1, Constants.kTimeoutMs);
-		_rightMotor.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, Constants.kTimeoutMs);
-
-		//_leftMotor.configSensorTerm(SensorTerm.Diff1, FeedbackDevice.RemoteSensor1, Constants.kTimeoutMs);
-		_leftMotor.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, Constants.kTimeoutMs);
 
     //Use Sum for the primary PID
     _rightMotor.configSelectedFeedbackSensor(	FeedbackDevice.SensorSum, 
@@ -346,35 +325,17 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
 		_leftMotor.configSelectedFeedbackCoefficient(		1, 						              // Coefficient
                                                   	Constants.PID_PRIMARY,		// PID Slot of Source 
                                                   	Constants.kTimeoutMs);
-    
-    //Use Diff for the aux PID
-    _rightMotor.configSelectedFeedbackSensor(	FeedbackDevice.SensorDifference, 
-                                              Constants.PID_TURN, 
-																							Constants.kTimeoutMs);
-																							
-		_leftMotor.configSelectedFeedbackSensor(	FeedbackDevice.SensorDifference, 
-                                              Constants.PID_TURN, 
-                                              Constants.kTimeoutMs);
-
-    //
-    _rightMotor.configSelectedFeedbackCoefficient( 	0.5, 
-                                                    Constants.PID_TURN, 
-																										Constants.kTimeoutMs);
-																										
-		_leftMotor.configSelectedFeedbackCoefficient( 	0.5, 
-                                                    Constants.PID_TURN, 
-                                                    Constants.kTimeoutMs);
 
     //Set status frame periods to ensure we don't have stale data
-    _rightMotor.setStatusFramePeriod(StatusFrame.Status_12_Feedback1, 20, Constants.kTimeoutMs);
+    //_rightMotor.setStatusFramePeriod(StatusFrame.Status_12_Feedback1, 20, Constants.kTimeoutMs);
 		_rightMotor.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 20, Constants.kTimeoutMs);
 		_rightMotor.setStatusFramePeriod(StatusFrame.Status_14_Turn_PIDF1, 20, Constants.kTimeoutMs);		
-		_leftMotor.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, Constants.kTimeoutMs);
+		//_leftMotor.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, Constants.kTimeoutMs);
 		
-		_leftMotor.setStatusFramePeriod(StatusFrame.Status_12_Feedback1, 20, Constants.kTimeoutMs);
+		//_leftMotor.setStatusFramePeriod(StatusFrame.Status_12_Feedback1, 20, Constants.kTimeoutMs);
 		_leftMotor.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 20, Constants.kTimeoutMs);
 		_leftMotor.setStatusFramePeriod(StatusFrame.Status_14_Turn_PIDF1, 20, Constants.kTimeoutMs);		
-    _rightMotor.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, Constants.kTimeoutMs);
+    //_rightMotor.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, Constants.kTimeoutMs);
 
     //Config motor deadband value
 		_rightMotor.configNeutralDeadband(Constants.kNeutralDeadband, Constants.kTimeoutMs);
@@ -394,16 +355,6 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
 		_rightMotor.configClosedLoopPeakOutput(Constants.kSlot_Velocit, Constants.kGains_Velocit.kPeakOutput, Constants.kTimeoutMs);
     _rightMotor.configAllowableClosedloopError(Constants.kSlot_Velocit, 0, Constants.kTimeoutMs);
 
-    //Configure PID variables for aux PID (Turning)
-    _rightMotor.config_kP(Constants.kSlot_Turning, Constants.kGains_Turning.kP, Constants.kTimeoutMs);
-		_rightMotor.config_kI(Constants.kSlot_Turning, Constants.kGains_Turning.kI, Constants.kTimeoutMs);
-		_rightMotor.config_kD(Constants.kSlot_Turning, Constants.kGains_Turning.kD, Constants.kTimeoutMs);
-		_rightMotor.config_kF(Constants.kSlot_Turning, Constants.kGains_Turning.kF, Constants.kTimeoutMs);
-		_rightMotor.config_IntegralZone(Constants.kSlot_Turning, Constants.kGains_Turning.kIzone, Constants.kTimeoutMs);
-		_rightMotor.configClosedLoopPeakOutput(Constants.kSlot_Turning, Constants.kGains_Turning.kPeakOutput, Constants.kTimeoutMs);
-		_rightMotor.configAllowableClosedloopError(Constants.kSlot_Turning, 0, Constants.kTimeoutMs);
-		
-
 		//Configure PID variables for primary PID (Velocity or Forward)
 		_leftMotor.config_kP(Constants.kSlot_Velocit, Constants.kGains_Velocit.kP, Constants.kTimeoutMs);
 		_leftMotor.config_kI(Constants.kSlot_Velocit, Constants.kGains_Velocit.kI, Constants.kTimeoutMs);
@@ -413,15 +364,6 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
 		_leftMotor.configClosedLoopPeakOutput(Constants.kSlot_Velocit, Constants.kGains_Velocit.kPeakOutput, Constants.kTimeoutMs);
     _leftMotor.configAllowableClosedloopError(Constants.kSlot_Velocit, 0, Constants.kTimeoutMs);
 
-    //Configure PID variables for aux PID (Turning)
-    _leftMotor.config_kP(Constants.kSlot_Turning, Constants.kGains_Turning.kP, Constants.kTimeoutMs);
-		_leftMotor.config_kI(Constants.kSlot_Turning, Constants.kGains_Turning.kI, Constants.kTimeoutMs);
-		_leftMotor.config_kD(Constants.kSlot_Turning, Constants.kGains_Turning.kD, Constants.kTimeoutMs);
-		_leftMotor.config_kF(Constants.kSlot_Turning, Constants.kGains_Turning.kF, Constants.kTimeoutMs);
-		_leftMotor.config_IntegralZone(Constants.kSlot_Turning, Constants.kGains_Turning.kIzone, Constants.kTimeoutMs);
-		_leftMotor.configClosedLoopPeakOutput(Constants.kSlot_Turning, Constants.kGains_Turning.kPeakOutput, Constants.kTimeoutMs);
-    _leftMotor.configAllowableClosedloopError(Constants.kSlot_Turning, 0, Constants.kTimeoutMs);
-
     //Config update time for PID loops
     int closedLoopTimeMs = 1;
 		_rightMotor.configClosedLoopPeriod(0, closedLoopTimeMs, Constants.kTimeoutMs);
@@ -429,10 +371,6 @@ public class DriveTrainEncoderSubsystem extends Subsystem {
 
 		_leftMotor.configClosedLoopPeriod(0, closedLoopTimeMs, Constants.kTimeoutMs);
     _leftMotor.configClosedLoopPeriod(1, closedLoopTimeMs, Constants.kTimeoutMs);
-
-    //Use if using aux sensor
-		_rightMotor.configAuxPIDPolarity(false, Constants.kTimeoutMs);
-		_leftMotor.configAuxPIDPolarity(false, Constants.kTimeoutMs);
 
 		_rightMotor.configClosedloopRamp(0.03, Constants.kTimeoutMs);
 		_leftMotor.configClosedloopRamp(0.03, Constants.kTimeoutMs);
